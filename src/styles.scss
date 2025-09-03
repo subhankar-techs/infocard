@@ -1,0 +1,137 @@
+@use 'sass:color';
+// Global customizations and variables
+$card-bg: #2f2b5a;
+$card-text: #e9e7f2;
+$accent: #ffd54d;
+$muted: #bdb9d7;
+$dot: rgba(255,255,255,0.12);
+
+body {
+  background: radial-gradient(circle at 20% 20%, #121212 0%, #0a0a0a 60%) fixed;
+}
+
+.dot-grid {
+  background-image: radial-gradient($dot 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.profile-card {
+  background: $card-bg;
+  color: $card-text;
+  border: 0;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.06);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  overflow: hidden;
+  position: relative;
+  // mouse spotlight defaults
+  --mx: 50%;
+  --my: 50%;
+  cursor: pointer;
+
+  // cursor-following glow
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(220px circle at var(--mx) var(--my), rgba(255,213,77,0.22), transparent 60%);
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+  }
+
+  &__avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid $accent;
+    box-shadow: 0 0 0 6px rgba(255,213,77,0.15);
+    object-fit: cover;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  &__title {
+    font-weight: 700;
+    transition: color 160ms ease, transform 160ms ease;
+  }
+
+  &__subtitle {
+    color: $muted;
+    letter-spacing: 0.4px;
+    transition: color 160ms ease;
+  }
+
+  &__note a {
+    // use modern sass color.adjust to avoid deprecation warnings
+    color: color.adjust($accent, $lightness: 8%);
+    text-decoration: underline;
+  }
+
+  &__icons a {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    color: $muted;
+    transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      background: rgba(3, 166, 211, 0.907);
+      color: $accent;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.08);
+    &::after { opacity: 1; }
+    .profile-card__avatar { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 0 8px rgba(255,213,77,0.2); }
+    .profile-card__title { color: $accent; }
+    .profile-card__icons a { transform: translateY(-3px); background: rgba(3, 166, 211, 0.907); color: $accent; }
+  }
+}
+
+// smooth fade-up animation utilities
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 1000ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+[data-stagger="1"] { animation-delay: 0.30s; }
+[data-stagger="2"] { animation-delay: 0.35s; }
+[data-stagger="3"] { animation-delay: 0.40s; }
+[data-stagger="4"] { animation-delay: 0.45s; }
+[data-stagger="5"] { animation-delay: 0.50s; }
+[data-stagger="6"] { animation-delay: 0.55s; }
+
+.glass-ring {
+  position: absolute;
+  inset: -40% -40% auto auto;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.12), transparent 70%);
+  border-radius: 50%;
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.section-padding {
+  padding: 48px 0;
+}
+
+@media (max-width: 576px) {
+  .profile-card {
+    &__avatar { width: 96px; height: 96px; }
+  }
+}
+
+
